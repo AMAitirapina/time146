@@ -16,6 +16,7 @@ bot.
 """
 
 import logging
+import unidecode
 from typing import Dict
 from os import getenv
 
@@ -45,32 +46,21 @@ CHOOSING_NAME, INTERESTS = range(2)
 TOKEN = getenv("TOKEN")
 BOT_NAME = getenv("BOT_NAME")
 
-# reply_keyboard = [
-#     ['Age', 'Favourite colour'],
-#     ['Number of siblings', 'Something else...'],
-#     ['Done'],
-# ]
-# markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
-
+conversation_map = {}
 
 def start(update: Update, context: CallbackContext) -> int:
-    update.message.reply_text(
-        f'Oi, eu sou o {BOT_NAME}, qual é o seu nome',
-    )
+    update.message.reply_text(f'Oi, eu sou o {BOT_NAME}, qual é o seu nome')
 
     return CHOOSING_NAME
 
 def begin(update: Update, context: CallbackContext) -> int:
-
     if 'name' in context.user_data:
         name = context.user_data['name']
-        update.message.reply_text(f'Oi {name}, bem vindo de volta',)
+        update.message.reply_text(f'Oi {name}, bem vindo de volta, o que anda fazendo?',)
         return INTERESTS
 
     else:
-        update.message.reply_text(
-            f'Oi, como voce se chama?',
-        )
+        update.message.reply_text(f'Oi, eu sou o {BOT_NAME}, qual é o seu nome')
         return CHOOSING_NAME
 
 def set_name(update: Update, context: CallbackContext) -> int:
@@ -81,25 +71,16 @@ def set_name(update: Update, context: CallbackContext) -> int:
     return INTERESTS
 
 def regular_choice(update: Update, context: CallbackContext) -> int:
-    interest = update.message.text
+    # Formatar o texto do usuario para lower case e sem acentos
+    interest = unidecode.unidecode(update.message.text.lower())
     context.user_data['interest'] = interest
 
-    if interest == "futebol":
-        update.message.reply_text(
-            'Sabia que voce pode fazer uma parabola chutando uma bola?')
-    elif interest == "culinaria":
-        update.message.reply_text(
-            'Sabia que voce pode aprender quimica cozinhando?')
+    if interest in conversation_map:
+        update.message.reply_text(conversation_map[interest])
+    # TODO: salvar o termo novo na memoria
+    else:
+        update.message.reply_text(f'Não ouvi falar sobre {interest}, me conta mais!')
 
-    return INTERESTS
-
-
-def custom_choice(update: Update, context: CallbackContext) -> int:
-    interest = update.message.text
-    update.message.reply_text(
-        f'Não ouvi falar sobre {interest}, me conta mais!'
-    )
-    # TODO: estado do me conta mais
     return INTERESTS
 
 # def received_information(update: Update, context: CallbackContext) -> int:
@@ -124,14 +105,19 @@ def done(update: Update, context: CallbackContext) -> int:
     if 'choice' in user_data:
         del user_data['choice']
 
-    update.message.reply_text(
-        f"I learned these facts about you. Until next time!"
-    )
+    update.message.reply_text(f"I learned these facts about you. Until next time!")
 
     user_data.clear()
     return ConversationHandler.END
 
 def main() -> None:
+
+    conversation_file = open("conversation", "r")
+    conversation_lines = conversation_file.read().split('\n')
+
+    for i in range(0, len(conversation_lines), 2):
+        conversation_map[conversation_lines[i]] = conversation_lines[i+1]
+
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
@@ -152,11 +138,7 @@ def main() -> None:
                 MessageHandler(Filters.text, set_name),
             ],
             INTERESTS: [
-                MessageHandler(
-                    Filters.regex(
-                        '^(futebol|culinaria)$'), regular_choice
-                ),
-                MessageHandler(Filters.text, custom_choice),
+                MessageHandler(Filters.text, regular_choice),
             ],
             # CHOOSING: [
             #     MessageHandler(
@@ -189,6 +171,8 @@ def main() -> None:
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
 
-
+# TODO: chamar o usuario (ser ativo)
+# TODO: melhorar o fluxo de conversa
+# TODO: guardar os interesses do usuario
 if __name__ == '__main__':
     main()
