@@ -5,21 +5,29 @@
 # This program is dedicated to the public domain under the CC0 license.
 
 """
-Simple Bot to reply to Telegram messages.
-First, a few handler functions are defined. Then, those functions are passed to
+First, a few callback functions are defined. Then, those functions are passed to
 the Dispatcher and registered at their respective places.
 Then, the bot is started and runs until we press Ctrl-C on the command line.
 Usage:
-Basic Echobot example, repeats messages.
+Example of a bot-user conversation using ConversationHandler.
+Send /start to initiate the conversation.
 Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
 
 import logging
-import os
+from typing import Dict
+from os import getenv
 
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram import ReplyKeyboardMarkup, Update
+from telegram.ext import (
+    Updater,
+    CommandHandler,
+    MessageHandler,
+    Filters,
+    ConversationHandler,
+    CallbackContext,
+)
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -31,29 +39,95 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+CHOOSING_NAME, INTERESTS = range(2)
 
-# Define a few command handlers. These usually take the two arguments update and
-# context. Error handlers also receive the raised TelegramError object in error.
-def start(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
+TOKEN = getenv("TOKEN")
+BOT_NAME = getenv("BOT_NAME")
 
-
-def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
-
-
-def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
+# reply_keyboard = [
+#     ['Age', 'Favourite colour'],
+#     ['Number of siblings', 'Something else...'],
+#     ['Done'],
+# ]
+# markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 
-def main():
+def facts_to_str(user_data: Dict[str, str]) -> str:
+    facts = list()
 
-    TOKEN = os.getenv("TOKEN")
+    for key, value in user_data.items():
+        facts.append(f'{key} - {value}')
 
-    """Start the bot."""
+    return "\n".join(facts).join(['\n', '\n'])
+
+
+def start(update: Update, context: CallbackContext) -> int:
+    update.message.reply_text(
+        f'Oi, eu sou o {BOT_NAME}, qual é o seu nome',
+    )
+
+    return CHOOSING_NAME
+
+def set_name(update: Update, context: CallbackContext) -> int:
+    text = update.message.text
+    context.user_data['name'] = text
+    update.message.reply_text(f'Legal {text}, do que voce gosta?')
+
+    return INTERESTS
+
+def regular_choice(update: Update, context: CallbackContext) -> int:
+    interest = update.message.text
+    context.user_data['interest'] = interest
+
+    if interest == "futebol":
+        update.message.reply_text(
+            'Sabia que voce pode fazer uma parabola chutando uma bola?')
+    elif interest == "culinaria":
+        update.message.reply_text(
+            'Sabia que voce pode aprender quimica cozinhando?')
+
+    return ConversationHandler.END
+
+
+def custom_choice(update: Update, context: CallbackContext) -> int:
+    interest = update.message.text
+    update.message.reply_text(
+        f'Não ouvi falar sobre {interest}, me conta mais!'
+    )
+
+    return ConversationHandler.END
+
+# def received_information(update: Update, context: CallbackContext) -> int:
+#     user_data = context.user_data
+#     text = update.message.text
+#     category = user_data['choice']
+#     user_data[category] = text
+#     del user_data['choice']
+
+#     update.message.reply_text(
+#         "Neat! Just so you know, this is what you already told me:"
+#         f"{facts_to_str(user_data)} You can tell me more, or change your opinion"
+#         " on something.",
+#         reply_markup=markup,
+#     )
+
+#     return CHOOSING
+
+
+def done(update: Update, context: CallbackContext) -> int:
+    user_data = context.user_data
+    if 'choice' in user_data:
+        del user_data['choice']
+
+    update.message.reply_text(
+        f"I learned these facts about you: {facts_to_str(user_data)} Until next time!"
+    )
+
+    user_data.clear()
+    return ConversationHandler.END
+
+
+def main() -> None:
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
@@ -62,13 +136,42 @@ def main():
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
 
-    # on different commands - answer in Telegram
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
+    # Add conversation handler with the states CHOOSING, TYPING_CHOICE and TYPING_REPLY
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('start', start)],
+        states={
+            CHOOSING_NAME: [
+                MessageHandler(Filters.text, set_name),
+            ],
+            INTERESTS: [
+                MessageHandler(
+                    Filters.regex(
+                        '^(futebol|culinaria)$'), regular_choice
+                ),
+                MessageHandler(Filters.text, custom_choice),
+            ],
+            # CHOOSING: [
+            #     MessageHandler(
+            #         Filters.regex('^(Age|Favourite colour|Number of siblings)$'), regular_choice
+            #     ),
+            #     MessageHandler(Filters.regex('^Something else...$'), custom_choice),
+            # ],
+            # TYPING_CHOICE: [
+            #     MessageHandler(
+            #         Filters.text & ~(Filters.command | Filters.regex('^Done$')), regular_choice
+            #     )
+            # ],
+            # TYPING_REPLY: [
+            #     MessageHandler(
+            #         Filters.text & ~(Filters.command | Filters.regex('^Done$')),
+            #         received_information,
+            #     )
+            # ],
+        },
+        fallbacks=[MessageHandler(Filters.regex('^Done$'), done)],
+    )
 
-    # on noncommand i.e message - echo the message on Telegram
-    dispatcher.add_handler(MessageHandler(
-        Filters.text & ~Filters.command, echo))
+    dispatcher.add_handler(conv_handler)
 
     # Start the Bot
     updater.start_polling()
