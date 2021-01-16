@@ -9,7 +9,7 @@ Ter o pip instalado (normalmente vem junto com o python)
 
 ## Instruções de uso
 
-1. Faça uma copia do arquivo `.env.templte` e renomeei para `.env`
-1. No `.env` coloque o TOKEN do bot do telegram e de um nome para ele
-1. Rodar `pip install -U python-dotenv` e `pip install python-telegram-bot --upgrade`
-1. rode `python main.py`
+1. Faça uma copia do arquivo `.env.template` e renomeei para `.env`
+2. No `.env` coloque o TOKEN do bot do telegram e de um nome para ele
+3. Rodar `pip install -U python-dotenv` e `pip install python-telegram-bot --upgrade`
+4. rode `python main.py`
