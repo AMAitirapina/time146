@@ -52,21 +52,25 @@ BOT_NAME = getenv("BOT_NAME")
 # markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 
-def facts_to_str(user_data: Dict[str, str]) -> str:
-    facts = list()
-
-    for key, value in user_data.items():
-        facts.append(f'{key} - {value}')
-
-    return "\n".join(facts).join(['\n', '\n'])
-
-
 def start(update: Update, context: CallbackContext) -> int:
     update.message.reply_text(
         f'Oi, eu sou o {BOT_NAME}, qual é o seu nome',
     )
 
     return CHOOSING_NAME
+
+def begin(update: Update, context: CallbackContext) -> int:
+
+    if 'name' in context.user_data:
+        name = context.user_data['name']
+        update.message.reply_text(f'Oi {name}, bem vindo de volta',)
+        return INTERESTS
+
+    else:
+        update.message.reply_text(
+            f'Oi, como voce se chama?',
+        )
+        return CHOOSING_NAME
 
 def set_name(update: Update, context: CallbackContext) -> int:
     text = update.message.text
@@ -86,7 +90,7 @@ def regular_choice(update: Update, context: CallbackContext) -> int:
         update.message.reply_text(
             'Sabia que voce pode aprender quimica cozinhando?')
 
-    return ConversationHandler.END
+    return INTERESTS
 
 
 def custom_choice(update: Update, context: CallbackContext) -> int:
@@ -94,8 +98,8 @@ def custom_choice(update: Update, context: CallbackContext) -> int:
     update.message.reply_text(
         f'Não ouvi falar sobre {interest}, me conta mais!'
     )
-
-    return ConversationHandler.END
+    # TODO: estado do me conta mais
+    return INTERESTS
 
 # def received_information(update: Update, context: CallbackContext) -> int:
 #     user_data = context.user_data
@@ -120,12 +124,11 @@ def done(update: Update, context: CallbackContext) -> int:
         del user_data['choice']
 
     update.message.reply_text(
-        f"I learned these facts about you: {facts_to_str(user_data)} Until next time!"
+        f"I learned these facts about you. Until next time!"
     )
 
     user_data.clear()
     return ConversationHandler.END
-
 
 def main() -> None:
     # Create the Updater and pass it your bot's token.
@@ -138,7 +141,10 @@ def main() -> None:
 
     # Add conversation handler with the states CHOOSING, TYPING_CHOICE and TYPING_REPLY
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[
+            CommandHandler('start', start),
+            MessageHandler(Filters.text, begin),
+        ],
         states={
             CHOOSING_NAME: [
                 MessageHandler(Filters.text, set_name),
