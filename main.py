@@ -111,6 +111,7 @@ def main() -> None:
         entry_points=[
             CommandHandler('start', start),
             MessageHandler(Filters.text, begin),
+            MessageHandler(Filters.all, fallback),
         ],
         states={
             CHOOSING_NAME: [

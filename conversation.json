@@ -21,5 +21,10 @@
 		"respostas": [
 			"$sticker:CAACAgIAAxkBAAN2YARysktuI-mF4MWkoH4kVUZLwbkAAt0AA_cCyA_qWS-8p2pAPB4E"
 		]
+	},
+	"foto": {
+		"respostas": [
+			"$photo:bot.png"
+		]
 	}
 }

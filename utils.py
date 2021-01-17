@@ -1,5 +1,6 @@
 import json
 import unidecode
+import os
 from telegram import Update
 
 def parse_json_from_file(filename):
@@ -17,5 +18,8 @@ def format_input(text) -> int:
 def answer_user(update: Update, text):
     if text[0:9] == '$sticker:':
         update.message.reply_sticker(text[9:])
+    elif text[0:7] == '$photo:':
+        photo = open(os.path.join('photos', text[7:]), 'rb')
+        update.message.reply_photo(photo)
     else:
         update.message.reply_text(text)
