@@ -1,5 +1,5 @@
 # Estudo de caso
-_Modelo de interação humano/humano_
+_Modelo de interação humano/ humano_
 
 Conversa no Telegram de uma amiga com um adolescente.
 ___
@@ -26,7 +26,22 @@ O adolescente possui um celular e várias tarefas da escola atrasadas. Ele desej
 O jovem foi apresentado à sites de crowdfunding e à possibilidade de criar uma vaquinha onde as pessoas poderiam ajudá-lo a comprar seu computador. Ele gostou muito da ideia e quiz saber como faria para executar a tarefa. Solicitou a ajuda de sua amiga, _que também é professora_. A amiga sugeriu que ele analisasse os sites de crowdfunding e considerasse quais seriam as possibilidades de anunciar a sua proposta. Haviam entradas de texto, imagem e vídeo para que ele descrevesse seu projeto. Ele optou pela escrita e desenvolveu um texto a partir das orientações para contar sua história.
 ___
 # **Análise de dados**
+# Análise de fluxo para comunicação bot/ humano
+
+**Aprendizagem**
+A aprendizagem do adolescente pode ser otimizada pela aprendizagem do bot.
+
+> Análise de sentimentos
+_Sobre o que falar?_
 
 A partir do **fluxo de conversa** entre a amiga e o adolescente é possível identificar padrões de imagens e de texto que descrevem sequências comportamentais. Esses padrões podem ser compreendidos através da análise de sentimentos por meio do aprendizado de máquina.
 
-Este tipo de tecnologia torna possível personalizar o comportamento do Bot para que a interação bot/humano adquira maior acurácia na imersão do diálogo.
+Este tipo de tecnologia torna possível personalizar o comportamento do Bot para que a interação bot/ humano adquira maior acurácia na imersão do diálogo.
+
+> Aprendizagem:
+_o aluno se torna o mestre_
+
+__Associação__
+
+Na comunicação com o Bot também é possível ensiná-lo algumas coisas, como associar uma palavra-chave à um texto ou um link da internet.
+Assim você pode criar _informações correlacionadas_ e a sua própria história!
