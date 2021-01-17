@@ -24,7 +24,27 @@
 	},
 	"foto": {
 		"respostas": [
+			"eae",
 			"$photo:bot.png"
 		]
+	},
+	"historia" {
+		"repostas": [
+			"Posso te contar uma História? Oh, só que você vai construí-la, pode ser?"
+		],
+		"conversa": {
+			"sim": {
+				"respostas": [
+					"O ano é 1941, você é um viajante do tempo, para voltar ao presente, refaça os caminhos da história. A decisão é toda sua, mas tudo o que você decidir tem consequências! Avante?"
+				],
+				"conversa": {
+				}
+			},
+			"nao": {
+				"respostas": [
+					"Poxa, que pena =/  Persista! Vamos continuar esta conversa =D"
+				]
+			}
+		}
 	}
 }
