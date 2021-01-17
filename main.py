@@ -6,8 +6,8 @@
 import logging
 from typing import Dict
 from os import getenv
-
-from utils import parse_json_from_file, format_input
+import time
+from utils import parse_json_from_file, format_input, answer_user
 
 from telegram import ReplyKeyboardMarkup, Update
 from telegram.ext import (
@@ -37,7 +37,8 @@ CHOOSING_NAME, NEW_CHAT, KEEP_CHATING = range(3)
 TOKEN = getenv("TOKEN")
 BOT_NAME = getenv("BOT_NAME")
 
-conversation_map = {}
+# Pegar os dados de conversacao
+conversation_json = parse_json_from_file("conversation.json")
 
 def start(update: Update, context: CallbackContext) -> int:
     update.message.reply_text(f'Oi, eu sou o {BOT_NAME}, qual é o seu nome')
@@ -64,12 +65,12 @@ def set_name(update: Update, context: CallbackContext) -> int:
 
 def new_chat(update: Update, context: CallbackContext) -> int:
     interest = format_input(update.message.text)
-
-    if interest in conversation_map:
-        for answer in conversation_map[interest].respostas:
-            update.message.reply_text(answer)
-        if 'conversa' in conversation_map[interest]:
-            context.user_data[conversation_map] = conversation_map[interest].conversa
+    if interest in conversation_json:
+        for answer in conversation_json[interest]['respostas']:
+            answer_user(update, answer)
+            time.sleep(0.8)
+        if 'conversa' in conversation_json[interest]:
+            context.user_data['conversation_json'] = conversation_json[interest]['conversa']
             return KEEP_CHATING
     else:
         update.message.reply_text(f'Não ouvi falar sobre {interest}, me conta mais!')
@@ -79,26 +80,24 @@ def new_chat(update: Update, context: CallbackContext) -> int:
 def keep_chating(update: Update, context: CallbackContext) -> int:
     interest = format_input(update.message.text)
 
-    if interest in context.user_data[conversation_map]:
-        for answer in context.user_data[conversation_map].respostas:
-            update.message.reply_text(answer)
-        if 'conversa' in context.user_data[conversation_map]:
-            context.user_data[conversation_map] = context.user_data[conversation_map].conversa
+    if interest in context.user_data['conversation_json']:
+        for answer in context.user_data['conversation_json'][interest]['respostas']:
+            answer_user(update, answer)
+        if 'conversa' in context.user_data['conversation_json'][interest]:
+            context.user_data['conversation_json'] = context.user_data['conversation_json'][interest]['conversa']
             return KEEP_CHATING
     else:
-        update.message.reply_text(f'Não ouvi falar sobre {interest}, me conta mais!')
+        update.message.reply_text(f'Não ouvi falar sobre {interest}, me conta mais! (K)')
 
     return NEW_CHAT
 
 def fallback(update: Update, context: CallbackContext) -> int:
-    print(update)
     update.message.reply_text(f"Não entendi o que voce quis dizer")
+    if update.message.sticker:
+        update.message.reply_text(update.message.sticker.file_id)
     return NEW_CHAT
 
 def main() -> None:
-
-    # Pegar os dados de conversacao
-    conversation_map = parse_json_from_file("conversation.json")
 
     # Persitencia dos dados do usuario
     pp = PicklePersistence(filename='savedata')
@@ -121,7 +120,7 @@ def main() -> None:
                 MessageHandler(Filters.text, new_chat),
             ],
             KEEP_CHATING: [
-                MessageHandler(Filters.text, new_chat),
+                MessageHandler(Filters.text, keep_chating),
             ]
             # CHOOSING: [
             #     MessageHandler(

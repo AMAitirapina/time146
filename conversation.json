@@ -9,9 +9,9 @@
 		"respostas": [
 			"Sabia que voce pode aprender quimica cozinhando?"
 		],
-		"conversa:" : {
+		"conversa" : {
 			"cozinhar": {
-				"respota": [
+				"respostas": [
 					"Cozinhar envolve varios processos fisico quimicos!"
 				]
 			}
