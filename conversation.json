@@ -1,0 +1,25 @@
+{
+	"futebol": {
+		"respostas": [
+			"Sabia que voce pode fazer uma parabola chutando uma bola?",
+			"Eu gosto de futebol"
+		]
+	},
+	"culinaria": {
+		"respostas": [
+			"Sabia que voce pode aprender quimica cozinhando?"
+		],
+		"conversa:" : {
+			"cozinhar": {
+				"respota": [
+					"Cozinhar envolve varios processos fisico quimicos!"
+				]
+			}
+		}
+	},
+	"sticker": {
+		"respostas": [
+			"$sticker:CAACAgIAAxkBAAN2YARysktuI-mF4MWkoH4kVUZLwbkAAt0AA_cCyA_qWS-8p2pAPB4E"
+		]
+	}
+}
