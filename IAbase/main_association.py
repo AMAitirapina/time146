@@ -1,6 +1,6 @@
 import telepot
 import json
-from chatbot import Chatbot
+from association import Association
 
 with open('token.json') as jsonFile:
     token = json.load(jsonFile)
