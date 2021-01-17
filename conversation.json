@@ -28,16 +28,146 @@
 			"$photo:bot.png"
 		]
 	},
-	"historia" {
+	"historia": {
 		"repostas": [
 			"Posso te contar uma História? Oh, só que você vai construí-la, pode ser?"
 		],
 		"conversa": {
 			"sim": {
 				"respostas": [
-					"O ano é 1941, você é um viajante do tempo, para voltar ao presente, refaça os caminhos da história. A decisão é toda sua, mas tudo o que você decidir tem consequências! Avante?"
+					"O ano é 1941, você é um viajante do tempo, para voltar ao presente, refaça os caminhos da história.",
+					"A decisão é toda sua, mas tudo o que você decidir tem consequências! Avante?"
 				],
 				"conversa": {
+					"sim":{
+						"respostas": [
+							"O que está acontecendo no mundo em 1941?"
+						],
+						"conversa":{
+							"segunda guerra mundial":{
+								"respostas":[
+									"Isso mesmo, os alemães decidiram atacar seu grande inimigo, os Russos.",
+									"O que eles devem fazer? Lembre-se, você está reconstruindo a história. Atacar ou não atacar?"
+								],
+								"conversa":{
+									"atacar":{
+										"respostas":[
+											"É isso aí, os alemães decidiram atacar e perdem, a Rússia se fortalece. O “General inverno”, o poderoso frio do território russo, que já tinha acabado com os planos de Napoleão, cumpre o seu papel novamente!",
+											"Parabéns, você está um passo mais próximo do futuro. Tudo certo para a próxima missão?"
+										],
+										"conversa":{
+											"sim":{
+												"respostas": [
+													"O ano é 1944, as forças aliadas se organizam em uma grande operação, sob o comando do general Eisenhower.",
+													"Milhares de soldados vão desembarcar no território francês, você precisa definir em que lugar exatamente isso acontecerá!",
+													"Onde eles devem desembarcar?"
+												],
+												"conversa": {
+													"normandia":{
+														"respostas": [
+															"Você não deixa passar uma em!",
+															"É isso mesmo, mais de 3 milhões de soldados desembarcam na Normandia! É uma ajuda e tanto para a França, ocupada pelos alemães desde 1940!",
+															"Ufa, seu futuro permanece a salvo.",
+															"$photo:SegundaGuerra.jpg"
+														]
+													},
+													"nao sei":{
+														"respostas": [
+															"Pesquise um pouco no Google, vou abrir essa exceção, persista! Não deixe o seu futuro correr riscos =O"
+														]
+													}
+												}
+											},
+											"nao":{
+												"respostas": [
+													"Até breve, nos vemos na próxima missão!"
+												]
+											}
+										}
+									},
+									"nao atacar":{
+										"respostas":[
+											"Sinto muito, você mudou os rumos da história, não existe mais um futuro para você =/",
+											"Mas não tem problema, podemos começar o jogo novamente =P"
+										]
+									}
+								}
+							},
+							"nao sei":{
+								"respostas":[
+									"Pesquise um pouco no Google, você vai achar a resposta rapidinho, quer tentar novamente?"
+								],
+								"conversa":{
+									"sim":{
+										"respostas":[
+											"E aí, qual é a resposta certa?"
+										],
+										"conversa":{
+											"segunda guerra mundial": {
+												"respostas":[
+													"Isso mesmo, os alemães decidiram atacar seu grande inimigo, os Russos.",
+													"O que eles devem fazer? Lembre-se, você está reconstruindo a história. Atacar ou não atacar?"
+												],
+												"conversa":{
+													"atacar":{
+														"respostas":[
+															"É isso aí, os alemães decidiram atacar e perdem, a Rússia se fortalece. O “General inverno”, o poderoso frio do território russo, que já tinha acabado com os planos de Napoleão, cumpre o seu papel novamente!",
+															"Parabéns, você está um passo mais próximo do futuro. Tudo certo para a próxima missão?"
+														],
+														"conversa":{
+															"sim":{
+																"respostas": [
+																	"O ano é 1944, as forças aliadas se organizam em uma grande operação, sob o comando do general Eisenhower.",
+																	"Milhares de soldados vão desembarcar no território francês, você precisa definir em que lugar exatamente isso acontecerá!",
+																	"Onde eles devem desembarcar?"
+																],
+																"conversa": {
+																	"normandia":{
+																		"respostas": [
+																			"Você não deixa passar uma em!",
+																			"É isso mesmo, mais de 3 milhões de soldados desembarcam na Normandia! É uma ajuda e tanto para a França, ocupada pelos alemães desde 1940!",
+																			"Ufa, seu futuro permanece a salvo.",
+																			"$photo:SegundaGuerra.jpg"
+																		]
+																	},
+																	"nao sei":{
+																		"respostas": [
+																			"Pesquise um pouco no Google, vou abrir essa exceção, persista! Não deixe o seu futuro correr riscos =O"
+																		]
+																	}
+																}
+															},
+															"nao":{
+																"respostas": [
+																	"Até breve, nos vemos na próxima missão!"
+																]
+															}
+														}
+													},
+													"nao atacar":{
+														"respostas":[
+															"Sinto muito, você mudou os rumos da história, não existe mais um futuro para você =/",
+															"Mas não tem problema, podemos começar o jogo novamente =P"
+														]
+													}
+												}
+											}, 
+											"nao": {
+												"respostas":[
+													"Poxa, persista, você pode começar novamente ;)"
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"nao": {
+					"respostas": [
+						"Poxa, que pena =/  Persista! Vamos continuar esta conversa =D"
+					]
+					}
 				}
 			},
 			"nao": {
