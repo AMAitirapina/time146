@@ -32,7 +32,11 @@ ___
 
 _Fluxo de diálogo:_
 
+>>_R_ são as possíveis respostas do usuário. 
+
 >R- (1) 2º Guerra; Segunda Guerra; 2º Guerra Mundial; Segunda Guerra Mundial; segunda guerra; segunda guerra mundial; 2º guerra; 2 guerra. (2) Não sei; não sei; não; [qualquer outra resposta fora].
+
+>>_Cenário_ é a condição numa árvore de decisões do bot:
 
 >Cenário “não” (2) Pesquise um pouco no Google, você vai achar a resposta rapidinho, quer tentar novamente?
 >R- (1)  Sim; ok; s; si; yes; opa; bora; blz; beleza. (2) Não; not; naum; deixa pra lá; ñ; n.
@@ -41,6 +45,9 @@ _Fluxo de diálogo:_
 >B - Poxa, persista, você pode começar novamente ;)
 
 >Cenário [Resposta correta 2º Guerra] B- os alemães decidiram atacar seu grande inimigo, os Russos. O que eles devem fazer? Lembre-se, você está reconstruindo a história. Atacar ou não atacar?
+
+A imersão em conteúdos da BNCC ludicamente favorece o desenvolvimento do jovem porque torna-se possível aprender brincando. Nós acreditamos que a experiência de estudar pode ser interessante. Acreditamos que é possível criar novas formas de interagir adaptadas às necessidades singulares da humanidade, valorizando a diversidade que existe em nós e a nossa capacidade de aprender e ensinar criando experiências disruptivas.
+
 
 Que tal escrever a história da sua vida?
 Se desenvolver ensinando um bot a pensar... 
