@@ -5,7 +5,7 @@ from chatbot import Chatbot
 with open('token.json') as jsonFile:
     token = json.load(jsonFile)
 telegram = telepot.Bot(token)
-bot = Severina("Severina_Bot")
+bot = Chatbot("Persiste")
 
 def receiveMsg(msg):
     phrase = bot.listen(phrase=msg['text'])
