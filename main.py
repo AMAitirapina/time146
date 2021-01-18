@@ -144,7 +144,7 @@ def main() -> None:
     dispatcher.add_handler(conv_handler)
 
     # Iniciar o Bot
-    if (ENV == 'produtcion'):
+    if (ENV == 'production'):
         updater.start_webhook(listen="0.0.0.0",port=PORT,url_path=TOKEN)
         updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
     else:
