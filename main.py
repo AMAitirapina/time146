@@ -38,6 +38,7 @@ TOKEN = getenv("TOKEN")
 BOT_NAME = getenv("BOT_NAME")
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 PORT = getenv("PORT", default=8000)
+ENV = getenv("ENV")
 
 # Pegar os dados de conversacao
 conversation_json = parse_json_from_file("conversation.json")
@@ -143,15 +144,17 @@ def main() -> None:
     dispatcher.add_handler(conv_handler)
 
     # Iniciar o Bot
-    updater.start_webhook(listen="0.0.0.0",port=PORT,url_path=TOKEN)
-    updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
+    if (ENV == 'produtcion'):
+        updater.start_webhook(listen="0.0.0.0",port=PORT,url_path=TOKEN)
+        updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, TOKEN))
+    else:
+        updater.start_polling()
 
     # O bot executa até que o processo seja terminado com Ctrl-C
     # ou receba um SIGINT, SIGTERM or SIGABRT.
     updater.idle()
 
 # TODO: chamar o usuario (ser ativo)
-# TODO: melhorar o fluxo de conversa
 # TODO: guardar os interesses do usuario
 if __name__ == '__main__':
     main()
