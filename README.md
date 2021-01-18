@@ -8,6 +8,8 @@
 
 **Software base:** API Telegram
 In: https://core.telegram.org/api
+
+**Username:** @hackathoncrr146bot
 ___
 
 A interação humana nos tem sido restrita no contexto de pandemia. Quem nos motiva? Quem nos auxilia quando temos dificuldades? Alguns dos profissionais que antes estavam presencialmente conosco muitas vezes tem estado "do outro lado da tela". Neste sentido se faz necessário criar fontes de incentivo e empoderamento para que os jovens sintam-se acolhidos e possam se desenvolver.
