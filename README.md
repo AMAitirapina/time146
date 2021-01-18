@@ -30,8 +30,6 @@ O fluxo de aprendizagem possibilita que sua interação trilhe uma **Viagem no T
 ___
 >**Imersão:** _Viagem no Tempo_
 
-**Bot** O que está acontecendo no mundo em 1941?
-
 _Fluxo de diálogo:_
 
 ![dialog_flow](photos/fluxo_dialogo.png)
